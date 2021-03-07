@@ -1,0 +1,87 @@
+<div class="mx-5" style="margin-top: 5rem;">
+    <style>
+        table * {
+            color: white;
+            border: none;
+        }
+    </style>
+    <h1>Cart</h1>
+    <table class="table mt-5">
+        <thead style="background-color: #fff2; border: none;" class="mb-5">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Date Added to Cart</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" routerLink="/shop/products/1">Product name 1</th>
+            <td>$19.99</td>
+            <td>
+                <div class="d-flex" style="align-items: center;">
+                    <p style="margin-right: 1rem;">1</p>
+                    <button class="bg-transparent">
+                        <fa-icon [icon]="caretDown" class="mx-1" size="2x"></fa-icon>
+                    </button>
+                    <button class="bg-transparent">
+                        <fa-icon [icon]="caretUp" class="mx-1" size="2x"></fa-icon>
+                    </button>
+                </div>
+            </td>
+            <td>3/7/2021</td>
+            <td>$19.99</td>
+          </tr>
+          <tr>
+            <th scope="row" routerLink="/shop/products/1">Product name 2</th>
+            <td>$199.99</td>
+            <td>
+                <div class="d-flex" style="align-items: center;">
+                    <p style="margin-right: 1rem;">3</p>
+                    <button class="bg-transparent">
+                        <fa-icon [icon]="caretDown" class="mx-1" size="2x"></fa-icon>
+                    </button>
+                    <button class="bg-transparent">
+                        <fa-icon [icon]="caretUp" class="mx-1" size="2x"></fa-icon>
+                    </button>
+                </div>
+            </td>
+            <td>3/6/2021</td>
+            <td>$600.00</td>
+          </tr>
+          <tr>
+            <th scope="row" routerLink="/shop/products/1">Product name 3</th>
+            <td>$9.99</td>
+            <td>
+                <div class="d-flex" style="align-items: center;">
+                    <p style="margin-right: 1rem;">1</p>
+                    <button class="bg-transparent">
+                        <fa-icon [icon]="caretDown" class="mx-1" size="2x"></fa-icon>
+                    </button>
+                    <button class="bg-transparent">
+                        <fa-icon [icon]="caretUp" class="mx-1" size="2x"></fa-icon>
+                    </button>
+                </div>
+            </td>
+            <td>2/28/2021</td>
+            <td>$9.99</td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><h4 class="text-success font-weight-bold">$629.98</h4></td>
+          </tr>
+          <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><button class="btn btn-success">Checkout</button></td>
+          </tr>
+        </tbody>
+    </table>
+</div>
