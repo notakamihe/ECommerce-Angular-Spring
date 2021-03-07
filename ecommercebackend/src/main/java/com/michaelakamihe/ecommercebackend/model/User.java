@@ -1,6 +1,12 @@
 package com.michaelakamihe.ecommercebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.michaelakamihe.ecommercebackend.model.cart.CartItem;
+import com.michaelakamihe.ecommercebackend.model.cart.CartItemPK;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -26,6 +32,10 @@ public class User {
 
     @Column(nullable = false, length = 15)
     private String phone;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pk.user")
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public User () {
     }
@@ -93,5 +103,23 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    @Transient
+    public double getCartTotal () {
+        double sum = 0;
+
+        for (CartItem item : cartItems) {
+            sum += item.getTotalPrice();
+        }
+        return sum;
     }
 }

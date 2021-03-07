@@ -92,7 +92,7 @@ public class JwtAuthenticationController {
         final String token = jwtUtil.generateToken(userDetails);
 
         tokenResponse.put("token", token);
-        return ResponseEntity.ok(tokenResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tokenResponse);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

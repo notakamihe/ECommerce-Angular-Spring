@@ -1,5 +1,13 @@
 package com.michaelakamihe.ecommercebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.michaelakamihe.ecommercebackend.model.cart.CartItem;
+
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDto {
     private long id;
     private String username;
@@ -8,6 +16,10 @@ public class UserDto {
     private String name;
     private String address;
     private String phone;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pk.user")
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -63,5 +75,13 @@ public class UserDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 }
