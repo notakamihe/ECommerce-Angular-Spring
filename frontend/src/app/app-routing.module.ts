@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 
 const routes: Routes = [
+    {path: '', redirectTo: '/login', pathMatch: 'full'},
     {path: 'register', component: RegisterComponent},
     {path: 'login', component: LoginComponent},
     {path: 'shop', component: ProductListComponent},

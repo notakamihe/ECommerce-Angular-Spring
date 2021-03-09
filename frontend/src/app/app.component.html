@@ -18,16 +18,16 @@
             <li class="nav-item">
                 <a class="nav-link" routerLink="shop">Shop</a>
             </li>
-            <li class="nav-item" >
+            <li *ngIf="!isTokenThere" class="nav-item" >
               <a class="nav-link" routerLink="register">Register</a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="!isTokenThere" class="nav-item">
                 <a class="nav-link" routerLink="login">Login</a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="isTokenThere" class="nav-item">
                 <a class="nav-link" routerLink="account">Account</a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="isTokenThere" class="nav-item">
                 <a class="nav-link" routerLink="cart">Cart</a>
             </li>
           </ul>

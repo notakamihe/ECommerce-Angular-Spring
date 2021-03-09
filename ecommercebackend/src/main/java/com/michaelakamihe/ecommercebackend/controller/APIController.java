@@ -1,17 +1,22 @@
 package com.michaelakamihe.ecommercebackend.controller;
 
+import com.michaelakamihe.ecommercebackend.config.JwtUtil;
 import com.michaelakamihe.ecommercebackend.model.Product;
 import com.michaelakamihe.ecommercebackend.model.User;
 import com.michaelakamihe.ecommercebackend.model.cart.CartItem;
 import com.michaelakamihe.ecommercebackend.model.cart.CartItemPK;
 import com.michaelakamihe.ecommercebackend.service.CartItemService;
+import com.michaelakamihe.ecommercebackend.service.JwtUserDetailsService;
 import com.michaelakamihe.ecommercebackend.service.ProductService;
 import com.michaelakamihe.ecommercebackend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +28,26 @@ public class APIController {
     private final ProductService productService;
     private final CartItemService cartItemService;
 
+    @Autowired
+    private JwtUserDetailsService jwtUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
     public APIController(UserService userService, ProductService productService, CartItemService cartItemService) {
         this.userService = userService;
         this.productService = productService;
         this.cartItemService = cartItemService;
+    }
+
+    @PostMapping("/create-token")
+    public ResponseEntity<?> createToken (@RequestBody Map<String, String> user) throws Exception {
+        Map<String, Object> tokenResponse = new HashMap<>();
+        final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(user.get("username"));
+        final String token = jwtUtil.generateToken(userDetails);
+
+        tokenResponse.put("token", token);
+        return ResponseEntity.ok(tokenResponse);
     }
 
     @GetMapping("/users")
@@ -40,8 +61,17 @@ public class APIController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser (@PathVariable("id") Long id, @RequestBody User user) {
-        return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.OK);
+    public ResponseEntity<User> updateUser (@PathVariable("id") Long id, @RequestBody Map<String, Object> user) {
+        User newUser = new User(
+                (String) user.get("username"),
+                (String) user.get("password"),
+                (String) user.get("email"),
+                (String) user.get("name"),
+                (String) user.get("address"),
+                (String) user.get("phone")
+        );
+
+        return new ResponseEntity<>(userService.updateUser(id, newUser), HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}/cart")
@@ -122,6 +152,7 @@ public class APIController {
         return ResponseEntity.ok(cartItemService.getCartItems());
     }
 
+    @CrossOrigin
     @GetMapping("/cart-items/{id}/{productId}")
     public ResponseEntity<CartItem> getCartItem (@PathVariable("id") Long id,
                                                  @PathVariable("productId") Long productId) {

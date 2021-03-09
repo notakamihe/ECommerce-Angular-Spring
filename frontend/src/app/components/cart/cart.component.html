@@ -16,72 +16,52 @@
             <th scope="col">Total</th>
           </tr>
         </thead>
+        <tbody *ngFor="let item of cartItems; let i = index">
+            <tr>
+                <th scope="row" routerLink="/shop/products/{{item.product.id}}">{{item.product.name}}</th>
+                <td>${{item.product.price | number: '1.2-2'}}</td>
+                <td>
+                    <div class="d-flex" style="align-items: center;">
+                        <p style="margin-right: 1rem;">{{ item.quantity }}</p>
+                        <button class="bg-transparent">
+                            <fa-icon 
+                            [icon]="caretDown" 
+                            [style.color]="'#faa'" 
+                            class="mx-1" 
+                            size="2x"
+                            (click)="decreaseQuantity(item)"
+                        ></fa-icon>
+                        </button>
+                        <button class="bg-transparent">
+                            <fa-icon 
+                            [icon]="caretUp" 
+                            [style.color]="'#afa'" 
+                            class="mx-1" 
+                            size="2x"
+                            (click)="increaseQuantity(item)"
+                        ></fa-icon>
+                        </button>
+                    </div>
+                </td>
+                <td>{{item.addedOn | date: 'MM/dd/YYYY'}}</td>
+                <td>${{item.totalPrice | number: '1.2-2'}}</td>
+            </tr>
+        </tbody>
         <tbody>
-          <tr>
-            <th scope="row" routerLink="/shop/products/1">Product name 1</th>
-            <td>$19.99</td>
-            <td>
-                <div class="d-flex" style="align-items: center;">
-                    <p style="margin-right: 1rem;">1</p>
-                    <button class="bg-transparent">
-                        <fa-icon [icon]="caretDown" class="mx-1" size="2x"></fa-icon>
-                    </button>
-                    <button class="bg-transparent">
-                        <fa-icon [icon]="caretUp" class="mx-1" size="2x"></fa-icon>
-                    </button>
-                </div>
-            </td>
-            <td>3/7/2021</td>
-            <td>$19.99</td>
-          </tr>
-          <tr>
-            <th scope="row" routerLink="/shop/products/1">Product name 2</th>
-            <td>$199.99</td>
-            <td>
-                <div class="d-flex" style="align-items: center;">
-                    <p style="margin-right: 1rem;">3</p>
-                    <button class="bg-transparent">
-                        <fa-icon [icon]="caretDown" class="mx-1" size="2x"></fa-icon>
-                    </button>
-                    <button class="bg-transparent">
-                        <fa-icon [icon]="caretUp" class="mx-1" size="2x"></fa-icon>
-                    </button>
-                </div>
-            </td>
-            <td>3/6/2021</td>
-            <td>$600.00</td>
-          </tr>
-          <tr>
-            <th scope="row" routerLink="/shop/products/1">Product name 3</th>
-            <td>$9.99</td>
-            <td>
-                <div class="d-flex" style="align-items: center;">
-                    <p style="margin-right: 1rem;">1</p>
-                    <button class="bg-transparent">
-                        <fa-icon [icon]="caretDown" class="mx-1" size="2x"></fa-icon>
-                    </button>
-                    <button class="bg-transparent">
-                        <fa-icon [icon]="caretUp" class="mx-1" size="2x"></fa-icon>
-                    </button>
-                </div>
-            </td>
-            <td>2/28/2021</td>
-            <td>$9.99</td>
-          </tr>
-          <tr>
-            <th scope="row"></th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><h4 class="text-success font-weight-bold">$629.98</h4></td>
-          </tr>
-          <tr>
-            <th scope="row"></th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><button class="btn btn-success">Checkout</button></td>
-          </tr>
+            <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><h4 class="text-success font-weight-bold">${{getTotal() | number: '1.2-2'}}</h4></td>
+              </tr>
+              <tr>
+                <th scope="row"></th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-success" *ngIf="cartItems">Checkout</button></td>
+              </tr>
         </tbody>
     </table>
 </div>

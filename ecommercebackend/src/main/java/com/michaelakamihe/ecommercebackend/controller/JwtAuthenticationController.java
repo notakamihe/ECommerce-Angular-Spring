@@ -13,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,7 @@ public class JwtAuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @CrossOrigin
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<User> getCurrentUser (HttpServletRequest request)  {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -45,43 +48,51 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> registerUser (@RequestBody UserDto user) throws Exception {
+    public ResponseEntity<?> registerUser (@RequestBody Map<String, Object> user) throws Exception {
         User savedUser = new User();
+        User newUser = new User(
+                (String) user.get("username"),
+                (String) user.get("password"),
+                (String) user.get("email"),
+                (String) user.get("name"),
+                (String) user.get("address"),
+                (String) user.get("phone")
+        );
 
-        if (user.getUsername() == null) {
+        if (newUser.getUsername() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is missing.");
         }
 
-        if (user.getEmail() == null) {
+        if (newUser.getEmail() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is missing.");
         }
 
-        if (user.getPassword() == null) {
+        if (newUser.getPassword() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is missing.");
-        } else if (user.getPassword().length() < 8) {
+        } else if (newUser.getPassword().length() < 8) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password length must be 8+.");
         }
 
-        if (user.getName() == null) {
+        if (newUser.getName() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Name is missing.");
         }
 
-        if (user.getAddress() == null) {
+        if (newUser.getAddress() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Address is missing.");
         }
 
-        if (user.getPhone() == null) {
+        if (newUser.getPhone() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone is missing.");
         }
 
         try {
-            savedUser = jwtUserDetailsService.save(user);
+            savedUser = jwtUserDetailsService.save(newUser);
         } catch (DataIntegrityViolationException e) {
-            if (e.getRootCause().getMessage().contains(user.getUsername())) {
+            if (e.getRootCause().getMessage().contains(newUser.getUsername())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is not available.");
             }
 
-            if (e.getRootCause().getMessage().contains(user.getEmail())) {
+            if (e.getRootCause().getMessage().contains(newUser.getEmail())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is not available.");
             }
         }

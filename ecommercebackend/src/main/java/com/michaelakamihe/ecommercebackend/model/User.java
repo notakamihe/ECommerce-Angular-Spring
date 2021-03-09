@@ -34,7 +34,7 @@ public class User {
     private String phone;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pk.user")
+    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL)
     private List<CartItem> cartItems = new ArrayList<>();
 
     public User () {
@@ -47,6 +47,7 @@ public class User {
         this.name = name;
         this.address = address;
         this.phone = phone;
+        this.cartItems = new ArrayList<>();
     }
 
     public long getId() {
@@ -121,5 +122,19 @@ public class User {
             sum += item.getTotalPrice();
         }
         return sum;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", cartItems=" + cartItems +
+                '}';
     }
 }

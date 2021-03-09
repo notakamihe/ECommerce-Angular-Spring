@@ -10,18 +10,37 @@
         }
     </style>
     <div class="d-flex m-5">
-        <div class="product-img-container mx-5"></div>
-        <div class="col-6 rounded px-5 pt-5 pb-3" style="border: 1px solid white;">
-            <h2>This is the product name</h2>
-            <p class="text-muted">Added on Mar 7</p>
+        <div 
+            class="product-img-container mx-5" 
+            *ngIf="product != undefined"
+            [style.backgroundImage]="'url(' + product.imageUrl + ')'"
+        ></div>
+        <div 
+            *ngIf="product != undefined"
+            class="col-6 rounded px-5 pt-5 pb-3" 
+            style="border: 1px solid white;"
+        >
+            <h2>{{ product.name }}</h2>
+            <p class="text-muted">Added on {{ product.addedOn | date: 'MMM d'}}</p>
             <div class="d-flex mt-5" style="justify-content: space-between; align-items: center;">
-                <h1>$19.99</h1>
-                <button class="btn btn-success">Add to cart</button>
+                <h1>${{ product.price | number : '1.2-2' }}</h1>
+                <button 
+                    *ngIf="!isProductInCart" 
+                    class="btn btn-success" 
+                    [disabled]="!user" 
+                    (click)="addToCart()"
+                >Add to cart</button>
+                <button *ngIf="isProductInCart" class="btn btn-secondary" disabled>In cart</button>
             </div>
             <h5 class="my-4">Description</h5>
             <p style="text-align: justify; font-size: 14px;">
-                Lacus dui consectetur ligula nisi ut morbi id amet aenean nam non elit litora non volutpat et ut rutrum curabitur ullamcorper ridiculus parturient curae conubia. Penatibus adipiscing a mauris ullamcorper vestibulum ornare ipsum eros parturient adipiscing accumsan cum orci ultrices condimentum egestas id eu nascetur consectetur diam sed a ac aliquet parturient parturient suspendisse. Aliquet nostra nibh a a eleifend fusce id vestibulum rutrum a et at pulvinar curae enim varius parturient non dignissim cum urna suspendisse enim consectetur nam semper. 
+                {{ product.description }}
             </p>
         </div>
+        <h1 
+            *ngIf="product == undefined"
+            class="mx-auto" 
+            style="text-align: center; margin-top: 10rem;"
+        >Product not found</h1>
     </div>
 </div>

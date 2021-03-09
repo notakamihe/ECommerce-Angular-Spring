@@ -5,6 +5,8 @@ import com.michaelakamihe.ecommercebackend.model.Product;
 import com.michaelakamihe.ecommercebackend.model.User;
 import com.michaelakamihe.ecommercebackend.model.cart.CartItem;
 import com.michaelakamihe.ecommercebackend.repo.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,6 +24,9 @@ public class UserService {
         return repo.findAll();
     }
 
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
+
     public User getUser (Long id) {
         return repo.findById(id).orElseThrow(() ->
                 new UserNotFoundException("User by id " + id + " was not found."));
@@ -32,7 +37,6 @@ public class UserService {
 
         oldUser.setUsername(user.getUsername());
         oldUser.setEmail(user.getEmail());
-        oldUser.setPassword(user.getPassword());
         oldUser.setAddress(user.getAddress());
         oldUser.setName(user.getName());
         oldUser.setPhone(user.getPhone());

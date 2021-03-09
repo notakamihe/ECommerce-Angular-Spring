@@ -32,7 +32,7 @@ public class JwtUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
-    public User save (UserDto user) {
+    public User save (User user) {
         User newUser = new User(user.getUsername(), bcryptEncoder.encode(user.getPassword()), user.getEmail(),
                 user.getName(), user.getAddress(), user.getPhone());
 
